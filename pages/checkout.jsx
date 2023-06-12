@@ -57,7 +57,7 @@ const Checkout = () => {
       //   console.log(product);
       //   console.log(products);
 
-      let itemPrice = product.price;
+      let itemPrice = product?.price || 0;
       subTotal += itemPrice;
     });
   }
@@ -68,39 +68,52 @@ const Checkout = () => {
     <Layout>
       {!products.length && <div>you have no product in your shopping cart</div>}
       {products.length &&
-        products.map((product) => (
-          <div key={product._id} className="flex mb-5">
-            <div className="bg-gray-100 p-3 rounded-xl shrink-0">
-              <img className="w-24" src={product.picture} alt={product.name} />
-            </div>
-            <div className="pl-4">
-              <h3 className="font-bold text-lg">{product.name}</h3>
-              <p className="text-sm leading-4 text-gray-500">
-                {product.description}
-              </p>
-              <div className="flex justify-between mt-2	">
-                <div>${product.price}</div>
-                <div className="flex flex-row">
-                  <button
-                    onClick={() => reduceProduct(product._id)}
-                    className="w-6 h-6 flex items-center justify-center  border border-emerald-500 px-2 rounded-full"
-                  >
-                    -
-                  </button>
-                  <div className="px-3">
-                    {selectedProducts.filter((id) => id === product._id).length}
+        products.map((product) => {
+          const amount = selectedProducts.filter(
+            (id) => id === product._id
+          ).length;
+          if (amount === 0) return;
+          return (
+            <div key={product._id} className="flex mb-5">
+              <div className="bg-gray-100 p-3 rounded-xl shrink-0">
+                <img
+                  className="w-24"
+                  src={product.picture}
+                  alt={product.name}
+                />
+              </div>
+              <div className="pl-4">
+                <h3 className="font-bold text-lg">{product.name}</h3>
+                <p className="text-sm leading-4 text-gray-500">
+                  {product.description}
+                </p>
+                <div className="flex justify-between mt-2	">
+                  <div>${product.price}</div>
+                  <div className="flex flex-row">
+                    <button
+                      onClick={() => reduceProduct(product._id)}
+                      className="w-6 h-6 flex items-center justify-center  border border-emerald-500 px-2 rounded-full"
+                    >
+                      -
+                    </button>
+                    <div className="px-3">
+                      {
+                        selectedProducts.filter((id) => id === product._id)
+                          .length
+                      }
+                    </div>
+                    <button
+                      onClick={() => addProduct(product._id)}
+                      className="w-6 h-6 flex items-center justify-center  bg-emerald-500 px-2 rounded-full text-white"
+                    >
+                      +
+                    </button>
                   </div>
-                  <button
-                    onClick={() => addProduct(product._id)}
-                    className="w-6 h-6 flex items-center justify-center  bg-emerald-500 px-2 rounded-full text-white"
-                  >
-                    +
-                  </button>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
       <form action="" method="post">
         <div className="flex flex-col gap-4">
