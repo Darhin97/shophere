@@ -8,6 +8,7 @@ const Footer = () => {
   const pathname = router.pathname;
 
   const { selectedProducts } = useContext(ProductContext);
+
   return (
     <footer className="sticky bottom-0 bg-white w-full flex border-t border-t-gray-200 p-5 justify-center space-x-12 items-center">
       <Link href={"/"}>
